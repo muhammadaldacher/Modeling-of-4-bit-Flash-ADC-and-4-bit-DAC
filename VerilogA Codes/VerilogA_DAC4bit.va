@@ -1,0 +1,33 @@
+// VerilogA for ADC_Ideal_4bit_FlashADC, VerilogA_DAC_4bit, veriloga
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module VerilogA_DAC_4bit(d0,d1,d2,d3,vout,vdd,vss,vmin,vmax);
+
+parameter real vtrans=0.5;
+parameter real delay = 0;
+parameter real ttime = 1p;
+
+inout vdd,vss;
+input d0,d1,d2,d3;
+input vmin, vmax;
+output vout;
+
+electrical vout,vdd,vss,d0,d1,d2,d3,vmin,vmax;
+
+real result,d_0,d_1,d_2,d_3;
+
+analog begin
+	d_3 = V(d3)*8;
+	d_2 = V(d2)*4;
+	d_1 = V(d1)*2;
+	d_0 = V(d0)*1;
+		
+	result = ((d_3+d_2+d_1+d_0) * ((V(vmax)-V(vmin))/(16))) + V(vmin) ;
+
+	V(vout) <+ transition(result,delay,ttime);
+end
+
+
+endmodule

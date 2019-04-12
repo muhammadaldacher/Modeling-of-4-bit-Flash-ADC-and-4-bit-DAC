@@ -1,0 +1,173 @@
+// VerilogA for ADC_Ideal_4bit_FlashADC, VerilogA_LadderAndComparators, veriloga
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module VerilogA_LadderAndComparators(vin,clk,vmax,vmin,t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14);
+
+parameter real vtrans=0.5;
+parameter real delay = 0;
+parameter real ttime = 1p;
+parameter real clk_threshold = 0.9;		//vdd is 1.8v
+
+input clk,vin,vmin,vmax;
+output t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14;
+
+electrical vin,vmin,vmax,clk;
+electrical t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14;
+
+real step;
+real t_0,t_1,t_2,t_3,t_4,t_5,t_6,t_7,t_8,t_9,t_10,t_11,t_12,t_13,t_14;
+
+analog begin
+	
+	step = (V(vmax)-V(vmin))/16;
+
+	// Sampling Phase (-1 is for falling edge)
+	@(cross(V(clk) - clk_threshold, -1)) 
+	begin
+		if (V(vin) > step+V(vmin)) begin
+			t_0 = 1;
+		end
+		else begin
+			t_0 = 0;
+		end
+
+		if (V(vin) > ((2*step)+V(vmin))) begin
+			t_1 = 1;
+		end
+		else begin
+			t_1 = 0;
+		end
+
+		if (V(vin) > ((3*step)+V(vmin))) begin
+			t_2 = 1;
+		end
+		else begin
+			t_2 = 0;
+		end
+
+		if (V(vin) > ((4*step)+V(vmin))) begin
+			t_3 = 1;
+		end
+		else begin
+			t_3 = 0;
+		end
+
+		if (V(vin) > ((5*step)+V(vmin))) begin
+			t_4 = 1;
+		end
+		else begin
+			t_4 = 0;
+		end
+
+		if (V(vin) > ((6*step)+V(vmin))) begin
+			t_5 = 1;
+		end
+		else begin
+			t_5 = 0;
+		end
+
+		if (V(vin) > ((7*step)+V(vmin))) begin
+			t_6 = 1;
+		end
+		else begin
+			t_6 = 0;
+		end
+
+		if (V(vin) > ((8*step)+V(vmin))) begin
+			t_7 = 1;
+		end
+		else begin
+			t_7 = 0;
+		end
+
+		if (V(vin) > ((9*step)+V(vmin))) begin
+			t_8 = 1;
+		end
+		else begin
+			t_8 = 0;
+		end
+
+		if (V(vin) > ((10*step)+V(vmin))) begin
+			t_9 = 1;
+		end
+		else begin
+			t_9 = 0;
+		end
+
+		if (V(vin) > ((11*step)+V(vmin))) begin
+			t_10 = 1;
+		end
+		else begin
+			t_10 = 0;
+		end
+
+		if (V(vin) > ((12*step)+V(vmin))) begin
+			t_11 = 1;
+		end
+		else begin
+			t_11 = 0;
+		end
+
+		if (V(vin) > ((13*step)+V(vmin))) begin
+			t_12 = 1;
+		end
+		else begin
+			t_12 = 0;
+		end
+
+		if (V(vin) > ((14*step)+V(vmin))) begin
+			t_13 = 1;
+		end
+		else begin
+			t_13 = 0;
+		end
+
+		if (V(vin) > ((15*step)+V(vmin))) begin
+			t_14 = 1;
+		end
+		else begin
+			t_14 = 0;
+		end
+	end
+
+	@(cross(V(clk) - clk_threshold, +1)) 
+	begin
+		t_0 = 0;
+		t_1 = 0;
+		t_2 = 0;
+		t_3 = 0;
+		t_4 = 0;
+		t_5 = 0;
+		t_6 = 0;
+		t_7 = 0;
+		t_8 = 0;
+		t_9 = 0;
+		t_10 = 0;
+		t_11 = 0;
+		t_12 = 0;
+		t_13 = 0;
+		t_14 = 0;
+	end
+
+	V(t0) <+ transition(t_0,delay,ttime);
+	V(t1) <+ transition(t_1,delay,ttime);
+	V(t2) <+ transition(t_2,delay,ttime);
+	V(t3) <+ transition(t_3,delay,ttime);
+	V(t4) <+ transition(t_4,delay,ttime);
+	V(t5) <+ transition(t_5,delay,ttime);
+	V(t6) <+ transition(t_6,delay,ttime);
+	V(t7) <+ transition(t_7,delay,ttime);
+	V(t8) <+ transition(t_8,delay,ttime);
+	V(t9) <+ transition(t_9,delay,ttime);
+	V(t10) <+ transition(t_10,delay,ttime);
+	V(t11) <+ transition(t_11,delay,ttime);
+	V(t12) <+ transition(t_12,delay,ttime);
+	V(t13) <+ transition(t_13,delay,ttime);
+	V(t14) <+ transition(t_14,delay,ttime);
+end
+
+
+
+endmodule

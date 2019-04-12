@@ -1,0 +1,101 @@
+// VerilogA for ADC_Class, ThermometerToBinary, veriloga
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module ThermometerToBinary(t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,d0,d1,d2,d3,vdd,vss);
+
+parameter real vtrans=0.5;
+parameter real delay = 0;
+parameter real ttime = 1p;
+
+inout vdd,vss;
+input t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14;
+output d0,d1,d2,d3;
+
+electrical vdd,vss;
+electrical t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14;
+electrical d0,d1,d2,d3;
+
+real d_0,d_1,d_2,d_3;
+real vmid;
+
+//My inputs are from 0 to Vdd, My outputs are from 0 to 1 (binary codes)
+
+analog begin
+
+	vmid = (V(vdd)+V(vss))/2;
+
+	if (V(t14)>0.9)
+		begin 	
+			d_3 = 1;	d_2 = 1;	d_1 = 1;	d_0 = 1;
+		end
+	else if (V(t13)>0.9)
+		begin 	
+			d_3 = 1;	d_2 = 1;	 d_1 = 1;	 d_0 = 0;
+		end
+	else if (V(t12)>0.9)
+		begin 	
+			d_3 = 1;	 d_2 = 1;	 d_1 = 0;	 d_0 = 1;
+		end
+	else if (V(t11)>0.9)
+		begin 	
+			d_3 = 1;	 d_2 = 1;	d_1 = 0;	d_0 = 0;
+		end
+	else if (V(t10)>0.9)
+		begin 	
+			d_3 = 1;	d_2 = 0;	 d_1 = 1;	 d_0 = 1;
+		end
+	else if (V(t9)>0.9)
+		begin 	
+			d_3 = 1;	 d_2 = 0;	 d_1 = 1;	 d_0 = 0;
+		end
+	else if (V(t8)>0.9)
+		begin 	
+			d_3 = 1;	d_2 = 0;	 d_1 = 0;	d_0 = 1;
+		end
+	else if (V(t7)>0.9)
+		begin 	
+			d_3 = 1;	 d_2 = 0;	 d_1 = 0;	 d_0 = 0;
+		end
+	else if (V(t6)>0.9)
+		begin 	
+			d_3 = 0;	 d_2 = 1;	 d_1 = 1;	 d_0 = 1;
+		end
+	else if (V(t5)>0.9)
+		begin 	
+			d_3 = 0;	 d_2 = 1;	 d_1 = 1;	 d_0 = 0;
+		end
+	else if (V(t4)>0.9)
+		begin 	
+			d_3 = 0;	 d_2 = 1;	 d_1 = 0;	 d_0 = 1;
+		end
+	else if (V(t3)>0.9)
+		begin 	
+			d_3 = 0;	 d_2 = 1;	 d_1 = 0;	 d_0 = 0;
+		end
+	else if (V(t2)>0.9)
+		begin 	
+			d_3 = 0;	 d_2 = 0;	 d_1 = 1;	 d_0 = 1;
+		end
+	else if (V(t1)>0.9)
+		begin 	
+			d_3 = 0;	 d_2 = 0;	 d_1 = 1;	 d_0 = 0;
+		end
+	else if (V(t0)>0.9)
+		begin 	
+			d_3 = 0;	 d_2 = 0;	 d_1 = 0;	 d_0 = 1;
+		end
+	else
+		begin 	
+			d_3 = 0;	 d_2 = 0;	 d_1 = 0;	 d_0 = 0;
+		end
+
+	V(d3) <+ transition(d_3,delay,ttime);
+	V(d2) <+ transition(d_2,delay,ttime);
+	V(d1) <+ transition(d_1,delay,ttime);
+	V(d0) <+ transition(d_0,delay,ttime);
+
+end
+
+endmodule
